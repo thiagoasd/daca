@@ -1,4 +1,4 @@
-package bootwildfly;
+package models;
 
 public class Problema {
 	
