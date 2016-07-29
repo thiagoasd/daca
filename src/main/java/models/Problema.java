@@ -1,52 +1,32 @@
 package models;
 
 public class Problema {
-	
-	private long id;
-	private String nome;
-	private String descricao;
+
+	private int id;
 	private String codigo;
+	private String descricao;
 	private String dica;
-	
-	public Problema(long id, String name, String codigo, String dica, String descricao){
+	private String nome;
+
+	public Problema() {
+
+	}
+
+	public Problema(int id, String name, String codigo, String dica, String descricao) {
 		this.id = id;
 		this.codigo = codigo;
 		this.dica = dica;
 		this.descricao = descricao;
 		this.nome = name;
-	
-	}
-	
-	public Problema(){
-		
+
 	}
 
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return nome;
-	}
-
-	/**
-	 *@param Sets name value to name
-	 */
-	public void setName(String name) {
-		this.nome = name;
-	}
-
-	/**
-	 * @return the descricao
-	 */
-	public String getDescricao() {
-		return descricao;
-	}
-
-	/**
-	 *@param Sets descricao value to descricao
-	 */
-	public void setDescricao(String descricao) {
+	public Problema(String name, String codigo, String dica, String descricao) {
+		this.codigo = codigo;
+		this.dica = dica;
 		this.descricao = descricao;
+		this.nome = name;
+
 	}
 
 	/**
@@ -57,10 +37,10 @@ public class Problema {
 	}
 
 	/**
-	 *@param Sets codigo value to codigo
+	 * @return the descricao
 	 */
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
+	public String getDescricao() {
+		return descricao;
 	}
 
 	/**
@@ -71,26 +51,19 @@ public class Problema {
 	}
 
 	/**
-	 *@param Sets dica value to dica
-	 */
-	public void setDica(String dica) {
-		this.dica = dica;
-	}
-
-	/**
 	 * @return the id
 	 */
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 
 	/**
-	 *@param Sets id value to id
+	 * @return the name
 	 */
-	public void setId(long id) {
-		this.id = id;
+	public String getName() {
+		return nome;
 	}
-	
+
 	/**
 	 * @return the nome
 	 */
@@ -99,12 +72,51 @@ public class Problema {
 	}
 
 	/**
-	 *@param Sets nome value to nome
+	 * @param Sets
+	 *            codigo value to codigo
+	 */
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+
+	/**
+	 * @param Sets
+	 *            descricao value to descricao
+	 */
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	/**
+	 * @param Sets
+	 *            dica value to dica
+	 */
+	public void setDica(String dica) {
+		this.dica = dica;
+	}
+
+	/**
+	 * @param Sets
+	 *            id value to id
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	/**
+	 * @param Sets
+	 *            name value to name
+	 */
+	public void setName(String name) {
+		this.nome = name;
+	}
+
+	/**
+	 * @param Sets
+	 *            nome value to nome
 	 */
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
-	
-	
-	}
+
+}
