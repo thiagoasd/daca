@@ -2,8 +2,8 @@ package models;
 
 public class Problema {
 	
-	private final long id;
-	private String name;
+	private long id;
+	private String nome;
 	private String descricao;
 	private String codigo;
 	private String dica;
@@ -13,22 +13,26 @@ public class Problema {
 		this.codigo = codigo;
 		this.dica = dica;
 		this.descricao = descricao;
-		this.name = name;
+		this.nome = name;
 	
+	}
+	
+	public Problema(){
+		
 	}
 
 	/**
 	 * @return the name
 	 */
 	public String getName() {
-		return name;
+		return nome;
 	}
 
 	/**
 	 *@param Sets name value to name
 	 */
 	public void setName(String name) {
-		this.name = name;
+		this.nome = name;
 	}
 
 	/**
@@ -78,6 +82,27 @@ public class Problema {
 	 */
 	public long getId() {
 		return id;
+	}
+
+	/**
+	 *@param Sets id value to id
+	 */
+	public void setId(long id) {
+		this.id = id;
+	}
+	
+	/**
+	 * @return the nome
+	 */
+	public String getNome() {
+		return nome;
+	}
+
+	/**
+	 *@param Sets nome value to nome
+	 */
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 	
 	
