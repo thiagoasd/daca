@@ -34,7 +34,6 @@ public class ProblemControllerTest {
 		given().contentType(ContentType.JSON).body(prob).
 		when().post("/Problema").then().assertThat().statusCode(200);
 
-		fail("Not yet implemented");
 	}
 
 }
