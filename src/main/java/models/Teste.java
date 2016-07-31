@@ -14,16 +14,6 @@ public class Teste {
 
 	}
 
-	public Teste(String dica, String entrada, String nome, String saida, int problemID, boolean publico) {
-
-		this.dica = dica;
-		this.entrada = entrada;
-		this.nome = nome;
-		this.saida = saida;
-		this.problemID = problemID;
-		this.publico = publico;
-	}
-
 	public Teste(String dica, String entrada, String nome, String saida, int id, int problemID, boolean publico) {
 
 		this.dica = dica;

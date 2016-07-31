@@ -53,7 +53,7 @@ public class ProblemaConstroller {
 	public Teste[] Teste(@PathVariable int probID) {
 
 		Teste[] testes = new Teste[1];
-		testes[0] = new Teste("dica", "entrada", "nome", "saida", 0, true);
+		testes[0] = new Teste("dica", "entrada", "nome", "saida", 0, 0, true);
 		return testes;
 	}
 	
