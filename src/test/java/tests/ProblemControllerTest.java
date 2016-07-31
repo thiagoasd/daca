@@ -25,7 +25,7 @@ public class ProblemControllerTest {
 		jsonAsMap.put("id", 0);
 
 
-		get("/Problema").then().body("id", equalTo(0));
+		get("/Problema").then().body("id", equalTo(0));//hasItem(0)
 		
 		given().contentType(ContentType.JSON).body(jsonAsMap).
 		when().post("/Problema").then().assertThat().statusCode(200);
@@ -33,6 +33,34 @@ public class ProblemControllerTest {
 		Problema prob = new Problema("name", "cod", "dica", "desc");
 		given().contentType(ContentType.JSON).body(prob).
 		when().post("/Problema").then().assertThat().statusCode(200);
+		
+		get("/Problema/0").then().body("id", equalTo(0));
+		
+		get("/Problema/0").then().assertThat().statusCode(is(400)); //id invalido
+		
+		given()
+			.param("name", "novoNome")
+		.when()
+			.put("/Problema/0")
+		.then()
+			.assertThat().statusCode(is(200)).body("name", is("novoNome"));
+		
+		given()
+			.param("codigo", "111")
+		.when()
+			.put("/Problema/0")
+		.then()
+			.assertThat().statusCode(is(200)).body("codigo", is("111"));
+		
+		given()
+			.param("codigo", "111")
+		.when()
+			.put("/Problema/222")
+		.then()
+			.assertThat().statusCode(is(400));//probID invalido
+		
+		delete("/Problema/0").then().assertThat().statusCode(is(200));
+		get("/Probema/0l").then().assertThat().statusCode(is(400));
 
 	}
 
