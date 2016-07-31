@@ -16,7 +16,7 @@ public class SolucaoController {
 	public Solucao[] Solucao(@RequestParam(required = false) boolean last) {
 
 		Solucao[] sols = new Solucao[1];
-		sols[0] = new Solucao(last, "body", (new String[] { "Out1", "Out2" }));
+		sols[0] = new Solucao(0, last, "body", (new String[] { "Out1", "Out2" }));
 		return sols;
 	}
 	
@@ -24,7 +24,7 @@ public class SolucaoController {
 	@RequestMapping(path = "Problema/{probID}/Solucao", method = RequestMethod.GET)
 	public Solucao[] Solucao(@PathVariable int probID) {
 		Solucao[] sols = new Solucao[1];
-		sols[1] = new Solucao(true, "body", (new String[] { "Out1", "Out2" }));
+		sols[1] = new Solucao(0, true, "body", (new String[] { "Out1", "Out2" }));
 		return sols;
 	}
 

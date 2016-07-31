@@ -31,7 +31,7 @@ public class ProblemaConstroller {
 	@RequestMapping(path = "Problema/{probID}", method = RequestMethod.GET)
 	public Problema ProblemaSpecific(@PathVariable int probID) {
 
-		return new Problema(probID, "name", "codigo", "dica", "descricao");
+		return new Problema(probID, "nome", "codigo", "dica", "descricao");
 	}
 
 	@RequestMapping(path = "Problema/{probID}", method = RequestMethod.PUT)

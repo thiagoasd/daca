@@ -12,20 +12,20 @@ public class Problema {
 
 	}
 
-	public Problema(int id, String name, String codigo, String dica, String descricao) {
+	public Problema(int id, String nome, String codigo, String dica, String descricao) {
 		this.id = id;
 		this.codigo = codigo;
 		this.dica = dica;
 		this.descricao = descricao;
-		this.nome = name;
+		this.nome = nome;
 
 	}
 
-	public Problema(String name, String codigo, String dica, String descricao) {
+	public Problema(String nome, String codigo, String dica, String descricao) {
 		this.codigo = codigo;
 		this.dica = dica;
 		this.descricao = descricao;
-		this.nome = name;
+		this.nome = nome;
 
 	}
 
@@ -57,12 +57,6 @@ public class Problema {
 		return id;
 	}
 
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return nome;
-	}
 
 	/**
 	 * @return the nome
@@ -101,14 +95,6 @@ public class Problema {
 	 */
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	/**
-	 * @param Sets
-	 *            name value to name
-	 */
-	public void setName(String name) {
-		this.nome = name;
 	}
 
 	/**

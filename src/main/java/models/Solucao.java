@@ -7,13 +7,6 @@ public class Solucao {
 	private String body;
 	private String[] outputs;
 
-	public Solucao(boolean last, String body, String[] outputs) {
-
-		this.last = last;
-		this.body = body;
-		this.outputs = outputs;
-	}
-
 	public Solucao(int id, boolean last, String body, String[] outputs) {
 		
 		this.id = id;
