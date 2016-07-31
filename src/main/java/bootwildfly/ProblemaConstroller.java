@@ -14,9 +14,11 @@ public class ProblemaConstroller {
 
 	//---------------- PROBLEMA CRUD ----------------
 	@RequestMapping(path = "Problema", method = RequestMethod.GET)
-	public Problema Problema() {
-
-		return new Problema(0, "name", "codigo", "dica", "descricao");
+	public Problema[] Problema() {
+		
+		Problema[] probs = new Problema[1];
+		probs[0] = new Problema(0, "nome", "codigo", "dica", "descricao");
+		return probs;
 	}
 
 	@RequestMapping(path = "Problema", method = RequestMethod.POST)
@@ -42,15 +44,17 @@ public class ProblemaConstroller {
 	@RequestMapping(path = "Problema/{probID}", method = RequestMethod.DELETE)
 	public Problema ProblemaDelete(@PathVariable int probID) {
 
-		return Problema();
+		return Problema()[0];
 	}
 	
 	// ---------------- TESTE CRUD ----------------
 
 	@RequestMapping(path = "Problema/{probID}/Teste", method = RequestMethod.GET)
-	public Teste Teste(@PathVariable int probID) {
+	public Teste[] Teste(@PathVariable int probID) {
 
-		return new Teste("dica", "entrada", "nome", "saida", 0, true);
+		Teste[] testes = new Teste[1];
+		testes[0] = new Teste("dica", "entrada", "nome", "saida", 0, true);
+		return testes;
 	}
 	
 	@RequestMapping(path = "Problema/{probID}/Teste", method = RequestMethod.POST)
@@ -77,7 +81,7 @@ public class ProblemaConstroller {
 	@RequestMapping(path = "Problema/{probID}/Teste/{testeID}", method = RequestMethod.DELETE)
 	public Teste TesteDelete(@PathVariable int probID) {
 
-		return Teste(probID);
+		return Teste(probID)[0];
 	}
 
 	

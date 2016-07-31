@@ -13,16 +13,19 @@ import models.Solucao;
 public class SolucaoController {
 
 	@RequestMapping(path = "Solucao", method = RequestMethod.GET)
-	public Solucao Solucao(@RequestParam(required = false) boolean last) {
+	public Solucao[] Solucao(@RequestParam(required = false) boolean last) {
 
-		return new Solucao(last, "body", (new String[] { "Out1", "Out2" }));
+		Solucao[] sols = new Solucao[1];
+		sols[0] = new Solucao(last, "body", (new String[] { "Out1", "Out2" }));
+		return sols;
 	}
 	
 	//Resource to find specific solutionS to the provided probID
 	@RequestMapping(path = "Problema/{probID}/Solucao", method = RequestMethod.GET)
-	public Solucao Solucao(@PathVariable int probID) {
-		
-		return new Solucao(false, "body", (new String[] { "Out1", "Out2" }));
+	public Solucao[] Solucao(@PathVariable int probID) {
+		Solucao[] sols = new Solucao[1];
+		sols[1] = new Solucao(true, "body", (new String[] { "Out1", "Out2" }));
+		return sols;
 	}
 
 	@RequestMapping(path = "Solucao", method = RequestMethod.POST)
@@ -49,7 +52,7 @@ public class SolucaoController {
 	@RequestMapping(path = "Solucao/{solID}", method = RequestMethod.DELETE)
 	public Solucao SolucaoDelete(@PathVariable int solID) {
 
-		return Solucao(false);
+		return Solucao(false)[0];
 	}
 
 }
