@@ -1,13 +1,39 @@
 package models;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+import org.hibernate.validator.constraints.NotBlank;
+
+@Entity
 public class Teste {
 
+	@Column(nullable = false)
+	@NotBlank
 	private String dica;
+	
+	@Column(nullable = false)
+	@NotBlank
 	private String entrada;
+	
+	@Column(nullable = false)
+	@NotBlank
 	private String nome;
+	
+	@Column(nullable = false)
+	@NotBlank
 	private String saida;
+	
+	@Id
+	@GeneratedValue
 	private int id;
+	
+	@Column(nullable = false)
 	private int problemID;
+	
+	@Column(nullable = false)
 	private boolean publico;
 
 	public Teste() {

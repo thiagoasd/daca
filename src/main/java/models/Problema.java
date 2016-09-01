@@ -1,16 +1,58 @@
 package models;
 
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.beans.factory.annotation.Autowired;
+
+
+@Entity(name = "Problema")
 public class Problema {
 
-	private int id;
+	@Id
+	@GeneratedValue
+	private long id;
+	
+	/**
+	 * @return the testes
+	 */
+	public List<Teste> getTestes() {
+		return testes;
+	}
+
+	/**
+	 *@param Sets testes value to testes
+	 */
+	public void setTestes(List<Teste> testes) {
+		this.testes = testes;
+	}
+
+	@Column(nullable = false)
+	@NotBlank
 	private String codigo;
+	
+	@Column
 	private String descricao;
+	
+	@Column
 	private String dica;
+	
+	@Column(nullable = false)
 	private String nome;
 
+	@Autowired
 	public Problema() {
-
 	}
+	
+	@Column
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<Teste> testes;
 
 	public Problema(int id, String nome, String codigo, String dica, String descricao) {
 		this.id = id;
@@ -53,7 +95,7 @@ public class Problema {
 	/**
 	 * @return the id
 	 */
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
@@ -93,7 +135,7 @@ public class Problema {
 	 * @param Sets
 	 *            id value to id
 	 */
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
