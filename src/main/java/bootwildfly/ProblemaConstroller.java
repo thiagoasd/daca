@@ -2,8 +2,6 @@ package bootwildfly;
 
 import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,18 +17,16 @@ import models.Teste;
 
 @RestController
 public class ProblemaConstroller {
-	@PersistenceContext
-	EntityManager em;
 
 	@Autowired
 	ProblemaRepository PR;
 
 	// ---------------- PROBLEMA CRUD ----------------
 	@RequestMapping(path = "Problema", method = RequestMethod.GET)
-	public List<Problema> Problema() {
+	public ResponseEntity<?> Problema() {
 
 		List<Problema> probs = PR.findAll();
-		return probs;
+		return new ResponseEntity<>(probs, HttpStatus.OK);
 	}
 
 	@RequestMapping(path = "Problema", method = RequestMethod.POST)
@@ -41,7 +37,7 @@ public class ProblemaConstroller {
 		}
 
 		PR.save(prob);
-		return ResponseEntity.ok("Problem saved");
+		return ResponseEntity.ok("Problema saved");
 	}
 
 	// ---------------- PROBLEMA/ID (C)RUD ----------------
@@ -50,7 +46,7 @@ public class ProblemaConstroller {
 	public ResponseEntity<?> ProblemaSpecific(@PathVariable long probID) {
 
 		if (!PR.exists(probID)) {
-			return new ResponseEntity<>("No Problem found with id " + probID, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("No Problema found with id " + probID, HttpStatus.NOT_FOUND);
 		}
 
 		Problema prob = PR.findById(probID);
@@ -64,11 +60,11 @@ public class ProblemaConstroller {
 		if (bindingResult.hasErrors()) {
 			return new ResponseEntity<>("The object contain errors", HttpStatus.BAD_REQUEST);
 		} else if (!PR.exists(probID)) {
-			return new ResponseEntity<>("Problem with ID " + probID + " not found", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("Problema with ID " + probID + " not found", HttpStatus.NOT_FOUND);
 		} else {
 			prob.setId(probID);
 			PR.save(prob);
-			return new ResponseEntity<>("Problem edited", HttpStatus.OK);
+			return new ResponseEntity<>("Problema edited", HttpStatus.OK);
 		}
 	}
 
@@ -79,7 +75,7 @@ public class ProblemaConstroller {
 		}
 		
 		PR.delete(probID);
-		return ResponseEntity.ok("Problem " + probID + " deleted");
+		return ResponseEntity.ok("Problema " + probID + " deleted");
 	}
 
 	// ---------------- TESTE CRUD ----------------

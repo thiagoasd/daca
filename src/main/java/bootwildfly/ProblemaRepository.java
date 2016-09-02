@@ -8,10 +8,12 @@ import org.springframework.data.repository.CrudRepository;
 
 import models.Problema;
 
-
 public interface ProblemaRepository extends CrudRepository<Problema, Long> {
 	List<Problema> findAll();
+
 	Page<Problema> findAll(Pageable pageable);
-	List<Problema> findByNome(String nome);
+
 	Problema findById(long id);
+
+	List<Problema> findByNome(String nome);
 }

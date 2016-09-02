@@ -19,41 +19,28 @@ public class Problema {
 	@GeneratedValue
 	private long id;
 	
-	/**
-	 * @return the testes
-	 */
-	public List<Teste> getTestes() {
-		return testes;
-	}
-
-	/**
-	 *@param Sets testes value to testes
-	 */
-	public void setTestes(List<Teste> testes) {
-		this.testes = testes;
-	}
-
 	@Column(nullable = false)
 	@NotBlank
 	private String codigo;
-	
+
 	@Column
 	private String descricao;
-	
+
 	@Column
 	private String dica;
 	
 	@Column(nullable = false)
 	private String nome;
-
-	@Autowired
-	public Problema() {
-	}
 	
 	@Column
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Teste> testes;
+	
+	@Autowired
+	public Problema() {
+	}
 
+	
 	public Problema(int id, String nome, String codigo, String dica, String descricao) {
 		this.id = id;
 		this.codigo = codigo;
@@ -62,7 +49,7 @@ public class Problema {
 		this.nome = nome;
 
 	}
-
+	
 	public Problema(String nome, String codigo, String dica, String descricao) {
 		this.codigo = codigo;
 		this.dica = dica;
@@ -70,6 +57,7 @@ public class Problema {
 		this.nome = nome;
 
 	}
+
 
 	/**
 	 * @return the codigo
@@ -99,13 +87,20 @@ public class Problema {
 		return id;
 	}
 
-
 	/**
 	 * @return the nome
 	 */
 	public String getNome() {
 		return nome;
 	}
+
+	/**
+	 * @return the testes
+	 */
+	public List<Teste> getTestes() {
+		return testes;
+	}
+
 
 	/**
 	 * @param Sets
@@ -145,6 +140,13 @@ public class Problema {
 	 */
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	/**
+	 *@param Sets testes value to testes
+	 */
+	public void setTestes(List<Teste> testes) {
+		this.testes = testes;
 	}
 
 }
