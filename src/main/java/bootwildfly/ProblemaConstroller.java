@@ -20,6 +20,9 @@ public class ProblemaConstroller {
 
 	@Autowired
 	ProblemaRepository PR;
+	
+	@Autowired
+	TesteRepository TR;
 
 	// ---------------- PROBLEMA CRUD ----------------
 	@RequestMapping(path = "Problema", method = RequestMethod.GET)

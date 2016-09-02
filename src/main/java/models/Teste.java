@@ -28,7 +28,7 @@ public class Teste {
 	
 	@Id
 	@GeneratedValue
-	private int id;
+	private long id;
 	
 	@Column(nullable = false)
 	private int problemID;
@@ -68,7 +68,7 @@ public class Teste {
 	/**
 	 * @return the id
 	 */
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
@@ -124,7 +124,7 @@ public class Teste {
 	 * @param Sets
 	 *            id value to id
 	 */
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

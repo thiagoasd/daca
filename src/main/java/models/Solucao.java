@@ -2,7 +2,7 @@ package models;
 
 public class Solucao {
 
-	private int id;
+	private long id;
 	private boolean last;
 	private String body;
 	private String[] outputs;
@@ -66,14 +66,14 @@ public class Solucao {
 	/**
 	 * @return the id
 	 */
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
 	/**
 	 *@param Sets id value to id
 	 */
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
