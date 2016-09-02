@@ -80,38 +80,73 @@ public class ProblemaConstroller {
 
 	// ---------------- TESTE CRUD ----------------
 	@RequestMapping(path = "Problema/{probID}/Teste", method = RequestMethod.GET)
-	public Teste[] Teste(@PathVariable int probID) {
+	public ResponseEntity<?> Teste(@PathVariable long probID) {
 
-		Teste[] testes = new Teste[1];
-		testes[0] = new Teste("dica", "entrada", "nome", "saida", 0, 0, true);
-		return testes;
+		if (!PR.exists(probID)){
+			return new ResponseEntity<>("No Problem found with id " + probID, HttpStatus.NOT_FOUND);
+		}
+		
+		List<Teste> tests = TR.findByProblemID(probID);
+		
+		return new ResponseEntity<>(tests, HttpStatus.OK);
+
 	}
 
 	@RequestMapping(path = "Problema/{probID}/Teste", method = RequestMethod.POST)
-	public Teste Teste(@RequestBody Teste teste) {
-
-		return teste;
+	public ResponseEntity<?> Teste(@PathVariable long probID, @Valid @RequestBody Teste teste, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()){
+			return ResponseEntity.badRequest().body("The object contain errors");
+		} else if (!PR.exists(probID)){
+			return new ResponseEntity<>("Problem with ID " + probID + " not found", HttpStatus.NOT_FOUND);
+		} else {
+			TR.save(teste);
+			return ResponseEntity.ok("Test saved");
+		}
 	}
 
 	// ---------------- TESTE/ID (C)RUD ----------------
 
 	@RequestMapping(path = "Problema/{probID}/Teste/{testeID}", method = RequestMethod.GET)
-	public Teste TesteSpecific(@PathVariable int probID, @PathVariable int testeID) {
+	public ResponseEntity<?> TesteSpecific(@PathVariable long probID, @PathVariable long testeID) {
 
-		return new Teste("dica", "entrada", "nome", "saida", testeID, probID, false);
+		if(!PR.exists(probID)){
+			return new ResponseEntity<>("No Problem found with id " + probID, HttpStatus.NOT_FOUND);
+		} else if (!TR.exists(testeID)){
+			return new ResponseEntity<>("No Test found with id " + testeID, HttpStatus.NOT_FOUND);
+		}
+		
+		Teste teste = TR.findById(testeID);
+		return new ResponseEntity<>(teste, HttpStatus.OK);
+
 	}
 
 	@RequestMapping(path = "Problema/{probID}/Teste/{testeID}", method = RequestMethod.PUT)
-	public Teste TestePut(@PathVariable int probID, @PathVariable int testeID, @RequestBody Teste teste) {
+	public ResponseEntity<?> TestePut(@PathVariable long probID, @Valid @PathVariable long testeID, @RequestBody Teste teste,
+			BindingResult bindingResult) {
 
-		teste.setId(probID);
-		return teste;
+		if (bindingResult.hasErrors()){
+			return new ResponseEntity<>("The object contain errors", HttpStatus.BAD_REQUEST);
+		} else if (!PR.exists(probID)){
+			return new ResponseEntity<>("Problem with ID " + probID + " not found", HttpStatus.NOT_FOUND);
+		} else if (!TR.exists(testeID)){
+			return new ResponseEntity<>("Test with ID " + testeID + " not found", HttpStatus.NOT_FOUND);
+		} else {
+			teste.setId(testeID);
+			TR.save(teste);
+			return new ResponseEntity<>("Test edited", HttpStatus.OK);
+		}
+
 	}
 
 	@RequestMapping(path = "Problema/{probID}/Teste/{testeID}", method = RequestMethod.DELETE)
-	public Teste TesteDelete(@PathVariable int probID) {
-
-		return Teste(probID)[0];
+	public ResponseEntity<?> TesteDelete(@PathVariable long probID, @PathVariable long testID) {
+		if (!PR.exists(probID)){
+			return new ResponseEntity<>("Problem with ID " + probID + " not found", HttpStatus.NOT_FOUND);
+		} else if (!TR.exists(testID)){
+			return new ResponseEntity<>("Test with ID " + testID + " not found", HttpStatus.NOT_FOUND);
+		}
+		TR.delete(testID);
+		return ResponseEntity.ok("Test " + testID + " deleted");
 	}
 
 }
