@@ -71,7 +71,7 @@ public class SolucaoController {
 		}
 
 		SR.save(sol);
-		return ResponseEntity.ok("Solucao saved");
+		return ResponseEntity.ok("Solucao saved with id " + sol.getId());
 	}
 
 	// ---------------- SOLUCAO/ID (C)RUD ----------------
