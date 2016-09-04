@@ -10,6 +10,14 @@ import org.hibernate.validator.constraints.NotBlank;
 @Entity
 public class Teste {
 
+	@Id
+	@GeneratedValue
+	private long id;
+	
+	@Column(nullable = false)
+	@NotBlank
+	private String nome;
+	
 	@Column(nullable = false)
 	@NotBlank
 	private String dica;
@@ -20,15 +28,7 @@ public class Teste {
 	
 	@Column(nullable = false)
 	@NotBlank
-	private String nome;
-	
-	@Column(nullable = false)
-	@NotBlank
 	private String saida;
-	
-	@Id
-	@GeneratedValue
-	private long id;
 	
 	@Column(nullable = false)
 	private long problemID;
