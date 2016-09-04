@@ -2,6 +2,9 @@ package tests;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
+
+import java.util.Arrays;
+
 import org.junit.Test;
 
 import io.restassured.http.ContentType;
@@ -21,7 +24,7 @@ public class SolucaoControllerTest {
 		//get("/Solucao").then().body("outputs", is((new String[] { "Out1", "Out2" })));
 
 		//Test POST
-		Solucao sol = new Solucao(0, true, "corpo", (new String[] { "Out1", "Out2" }));
+		Solucao sol = new Solucao(0, true, "corpo", Arrays.asList("oi", "oi"), 0);
 		given().contentType(ContentType.JSON).body(sol).when().post("/Solucao").then().assertThat().statusCode(200)
 				.body("body", is("corpo"));
 

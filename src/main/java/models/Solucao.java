@@ -1,18 +1,51 @@
 package models;
 
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+import org.hibernate.validator.constraints.NotBlank;
+
+@Entity
 public class Solucao {
 
+	@Id
+	@GeneratedValue
 	private long id;
-	private boolean last;
-	private String body;
-	private String[] outputs;
 
-	public Solucao(int id, boolean last, String body, String[] outputs) {
+	@Column
+	private boolean last;
+
+	@Column(nullable = false)
+	@NotBlank
+	private String body;
+
+	@ElementCollection
+	private List<String> outputs;
+
+	@Column(nullable = false)
+	private long problemID;
+
+
+	public Solucao(int id, boolean last, String body, List<String> outputs, long problemID) {
 		
 		this.id = id;
 		this.last = last;
 		this.body = body;
 		this.outputs = outputs;
+		this.problemID = problemID;
+	}
+	
+public Solucao(boolean last, String body, List<String> outputs, long problemID) {
+		
+		this.last = last;
+		this.body = body;
+		this.outputs = outputs;
+		this.problemID = problemID;
 	}
 
 	public Solucao() {
@@ -51,7 +84,7 @@ public class Solucao {
 	/**
 	 * @return the outputs
 	 */
-	public String[] getOutputs() {
+	public List<String> getOutputs() {
 		return outputs;
 	}
 
@@ -59,7 +92,7 @@ public class Solucao {
 	 * @param Sets
 	 *            outputs value to outputs
 	 */
-	public void setOutputs(String[] outputs) {
+	public void setOutputs(List<String> outputs) {
 		this.outputs = outputs;
 	}
 
