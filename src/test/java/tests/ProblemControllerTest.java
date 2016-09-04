@@ -26,7 +26,6 @@ public class ProblemControllerTest {
 	@Test
 	public void ProblemaTest() {
 
-		// Right now we only return a Json with one Problema
 		get("/Problema").then().body("id", hasItem(1)).assertThat().statusCode(200);
 		get("/Problema").then().body("nome", hasItem("nome 1"));
 		get("/Problema").then().body("codigo", hasItem("codigo 1"));
@@ -58,7 +57,6 @@ public class ProblemControllerTest {
 	@Test
 	public void TesteTest() {
 
-		// Right now we only return a Json with one Teste
 		get("/Problema/1/Teste").then().body("id", hasItem(1)).assertThat().statusCode(200);
 		get("/Problema/1/Teste").then().body("dica", hasItem("dica 1"));
 		get("/Problema/1/Teste").then().body("entrada", hasItem("entrada 1"));

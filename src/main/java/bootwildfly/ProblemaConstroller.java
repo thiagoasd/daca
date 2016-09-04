@@ -4,6 +4,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.List;
 import javax.validation.Valid;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -72,12 +74,13 @@ public class ProblemaConstroller {
 		}
 	}
 
+
 	@RequestMapping(path = "Problema/{probID}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> ProblemaDelete(@PathVariable long probID) {
 		if (!PR.exists(probID)) {
 			return new ResponseEntity<>("Problema with ID " + probID + " not found", HttpStatus.NOT_FOUND);
 		}
-
+		
 		PR.delete(probID);
 		return ResponseEntity.ok("Problema " + probID + " deleted");
 	}
@@ -111,6 +114,10 @@ public class ProblemaConstroller {
 			return new ResponseEntity<>("Problema with ID " + probID + " not found", HttpStatus.NOT_FOUND);
 		} else {
 			TR.save(teste);
+			Problema prob = PR.findById(probID);
+			prob.addTest(teste);
+			PR.save(prob);
+
 			return ResponseEntity.ok("Teste saved");
 		}
 	}
