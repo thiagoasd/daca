@@ -4,48 +4,119 @@ import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
 import java.util.Arrays;
+import java.util.Random;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import bootwildfly.ProblemaRepository;
+import bootwildfly.SolucaoRepository;
 import io.restassured.http.ContentType;
-import models.Solucao;;
+import models.Problema;
+import models.Solucao;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = bootwildfly.Application.class)
 public class SolucaoControllerTest {
 
+	@Autowired
+	ProblemaRepository PR;
+
+	@Autowired
+	SolucaoRepository SR;
+
 	@Test
-	public void SolucaoTest() {
-		
-		// Test GET
-		get("/Solucao").then().body("id", hasItem(0)).assertThat().statusCode(200);
-		get("/Solucao").then().body("last", hasItem(false));
-		get("/Solucao").then().body("body", hasItem("body"));
-		
-		//TODO LEARN HOW TO CHECK STRING ARRAYS IN BODY RESPONSE
-		//get("/Solucao").then().body("outputs", is((new String[] { "Out1", "Out2" })));
+	public void SolucaoGet() {
+		Random ran = new Random();
+		int ID = ran.nextInt(11) + 1;
 
-		//Test POST
-		Solucao sol = new Solucao(0, true, "corpo", Arrays.asList("oi", "oi"), 0);
-		given().contentType(ContentType.JSON).body(sol).when().post("/Solucao").then().assertThat().statusCode(200)
-				.body("body", is("corpo"));
+		get("/Solucao").then().assertThat().statusCode(200).extract();
+		get("/Solucao").then().body("id", hasItem(ID));
+		get("/Solucao").then().body("last", hasItem(true));
+		get("/Solucao").then().body("body", hasItem("corpo"));
+		get("/Solucao").then().body("problemID", hasItem(ID));
+	}
 
-		// Tests GET with Path Variable
-		get("/Solucao/0").then().assertThat().body("id", is(0)).statusCode(is(200));
-		get("/Solucao/1").then().assertThat().body("id", is(1)).statusCode(is(200));
+	@Test
+	public void SolucaoPost() {
 
-		// Tests PUT and checking if it really changed the JSON
-		sol.setBody("novoBody");
-		given().contentType(ContentType.JSON).body(sol).when().put("/Solucao/0").then().assertThat().statusCode(is(200))
-				.body("body", is("novoBody"));
+		Problema prob = new Problema("nome1", "cod2", "dica3", "descricao4");
+		int ProblemID = given().contentType(ContentType.JSON).body(prob).when().post("/Problema").then().assertThat()
+				.statusCode(is(200)).extract().path("objectId");
 
-		sol.setLast(true);
-		given().contentType(ContentType.JSON).body(sol).when().put("/Solucao/0").then().assertThat().statusCode(is(200))
-				.body("last", is(true));
+		Solucao sol = new Solucao(false, "1", Arrays.asList("out1", "out2"), ProblemID);
+		int ID = given().contentType(ContentType.JSON).body(sol).when().post("/Solucao").then().assertThat()
+				.statusCode(is(200)).extract().path("objectId");
 
-		// Tests DELETE
-		delete("/Solucao/0").then().assertThat().statusCode(is(200));
-		
-		
+		get("/Solucao/{ID}", ID).then().assertThat().statusCode(200).extract();
+		get("/Solucao/{ID}", ID).then().body("id", is(ID));
+		get("/Solucao/{ID}", ID).then().body("last", is(false));
+		get("/Solucao/{ID}", ID).then().body("body", is("1"));
+		get("/Solucao/{ID}", ID).then().body("problemID", is(ProblemID));
+	}
+
+	@Test
+	public void SolucaoPut() {
+		Problema prob = new Problema("nome1", "cod2", "dica3", "descricao4");
+		int ProblemID = given().contentType(ContentType.JSON).body(prob).when().post("/Problema").then().assertThat()
+				.statusCode(is(200)).extract().path("objectId");
+
+		Solucao sol = new Solucao(false, "1", Arrays.asList("out1", "out2"), ProblemID);
+		int ID = given().contentType(ContentType.JSON).body(sol).when().post("/Solucao").then().assertThat()
+				.statusCode(is(200)).extract().path("objectId");
+
+		get("/Solucao/{ID}", ID).then().assertThat().statusCode(200).extract();
+		get("/Solucao/{ID}", ID).then().body("id", is(ID));
+		get("/Solucao/{ID}", ID).then().body("last", is(false));
+		get("/Solucao/{ID}", ID).then().body("body", is("1"));
+		get("/Solucao/{ID}", ID).then().body("problemID", is(ProblemID));
+
+		sol = new Solucao(true, "2", Arrays.asList("out3", "out4"), ProblemID);
+		given().contentType(ContentType.JSON).body(sol).when().put("/Solucao/" + ID).then().assertThat()
+				.statusCode(200);
+
+		get("/Solucao/{ID}", ID).then().assertThat().statusCode(200).extract();
+		get("/Solucao/{ID}", ID).then().body("id", is(ID));
+		get("/Solucao/{ID}", ID).then().body("last", is(true));
+		get("/Solucao/{ID}", ID).then().body("body", is("2"));
+		get("/Solucao/{ID}", ID).then().body("problemID", is(ProblemID));
 
 	}
 
+	@Test
+	public void SolucaoDelete() {
+		Problema prob = new Problema("nome1", "cod2", "dica3", "descricao4");
+		int ProblemID = given().contentType(ContentType.JSON).body(prob).when().post("/Problema").then().assertThat()
+				.statusCode(is(200)).extract().path("objectId");
+
+		Solucao sol = new Solucao(false, "1", Arrays.asList("out1", "out2"), ProblemID);
+		int ID = given().contentType(ContentType.JSON).body(sol).when().post("/Solucao").then().assertThat()
+				.statusCode(is(200)).extract().path("objectId");
+
+		delete("/Solucao/{id}", ID).then().assertThat().statusCode(200);
+		get("/Solucao/{id}", ID).then().assertThat().statusCode(404);
+	}
+
+	@Before
+	public void init() {
+		if (PR.count() == 0) {
+
+			for (int i = 1; i < 12; i++) {
+				Problema prob = new Problema("nome " + i, "codigo " + i, "dica " + i, "descricao " + i);
+				prob.setId(i);
+				given().contentType(ContentType.JSON).body(prob).when().post("/Problema").then().assertThat()
+						.statusCode(200);
+
+				Solucao sol = new Solucao(true, "corpo", Arrays.asList("out1", "out2"), i);
+				given().contentType(ContentType.JSON).body(sol).when().post("/Solucao").then().assertThat()
+						.statusCode(200);
+
+			}
+		}
+
+	}
 }

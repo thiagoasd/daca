@@ -15,5 +15,6 @@ public interface SolucaoRepository extends CrudRepository<Solucao, Long>{
 	List<Solucao> findByLast(boolean last);
 	List<Solucao> findByProblemIDAndLast(long problemaID, boolean last);
 	Solucao findById(long id);
+	void deleteByProblemID(long ProblemID);
 	
 }

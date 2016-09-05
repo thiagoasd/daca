@@ -25,6 +25,9 @@ public class ProblemaConstroller {
 
 	@Autowired
 	TesteRepository TR;
+	
+	@Autowired
+	SolucaoRepository SR;
 
 	ResponseDTO response;
 
@@ -92,6 +95,9 @@ public class ProblemaConstroller {
 		}
 
 		PR.delete(probID);
+		TR.deleteByProblemID(probID);
+		SR.deleteByProblemID(probID);
+		
 		response = new ResponseDTO(HttpStatus.OK.value(), true, probID);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

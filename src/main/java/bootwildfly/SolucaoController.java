@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import models.ResponseDTO;
 import models.Solucao;
 
 @RestController
@@ -25,10 +26,11 @@ public class SolucaoController {
 
 	@Autowired
 	ProblemaRepository PR;
+	ResponseDTO response;
 
 	// Accept last as variable to find the last Solucao to Problema
 	@RequestMapping(path = "Solucao", method = RequestMethod.GET)
-	public List<Solucao> Solucao(@RequestParam(required = false) boolean last) {
+	public ResponseEntity<?> Solucao(@RequestParam(required = false) boolean last) {
 
 		List<Solucao> sols;
 		if (last) {
@@ -37,7 +39,7 @@ public class SolucaoController {
 			sols = SR.findAll();
 		}
 
-		return sols;
+		return new ResponseEntity<>(sols, HttpStatus.OK);
 	}
 
 	// Resource to find specific solutionS to the provided probID
@@ -45,12 +47,14 @@ public class SolucaoController {
 	public ResponseEntity<?> Solucao2SpecificProblem(@PathVariable long problemID) {
 
 		if (!PR.exists(problemID)) {
-			return new ResponseEntity<>("No Problem found with id " + problemID, HttpStatus.NOT_FOUND);
+			response = new ResponseDTO(HttpStatus.NOT_FOUND.value(), false, "No Problem found with id " + problemID);
+			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 		}
 
 		List<Solucao> sols = SR.findByProblemID(problemID);
 		if (sols.size() == 0) {
-			return new ResponseEntity<>("No Solution for the specified Problem", HttpStatus.NOT_FOUND);
+			response = new ResponseDTO(HttpStatus.NOT_FOUND.value(), false, "No Solution for the specified Problem");
+			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 		}
 
 		return new ResponseEntity<>(sols, HttpStatus.OK);
@@ -60,7 +64,14 @@ public class SolucaoController {
 	@RequestMapping(path = "Solucao", method = RequestMethod.POST)
 	public ResponseEntity<?> Solucao(@Valid @RequestBody Solucao sol, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
-			return ResponseEntity.badRequest().body("The object contain errors");
+			response = new ResponseDTO(HttpStatus.BAD_REQUEST.value(), false, "The object contain errors");
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
+
+		if (!PR.exists(sol.getProblemID())) {
+			response = new ResponseDTO(HttpStatus.NOT_FOUND.value(), false,
+					"No Problem found with id " + sol.getProblemID());
+			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 		}
 
 		// Find the other solutions for the same Problema and set last = false
@@ -71,16 +82,17 @@ public class SolucaoController {
 		}
 
 		SR.save(sol);
-		return ResponseEntity.ok("Solucao saved with id " + sol.getId());
+		response = new ResponseDTO(HttpStatus.OK.value(), true, sol.getId());
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	// ---------------- SOLUCAO/ID (C)RUD ----------------
-
 	@RequestMapping(path = "Solucao/{solID}", method = RequestMethod.GET)
 	public ResponseEntity<?> SolucaoSpecific(@PathVariable long solID) {
 
 		if (!SR.exists(solID)) {
-			return new ResponseEntity<>("No solution found with id " + solID, HttpStatus.NOT_FOUND);
+			response = new ResponseDTO(HttpStatus.NOT_FOUND.value(), false, "No solution found with id " + solID);
+			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 		}
 
 		Solucao sol = SR.findById(solID);
@@ -92,13 +104,18 @@ public class SolucaoController {
 			BindingResult bindingResult) {
 
 		if (bindingResult.hasErrors()) {
-			return new ResponseEntity<>("The object contain errors", HttpStatus.BAD_REQUEST);
+			response = new ResponseDTO(HttpStatus.BAD_REQUEST.value(), false, "The object contain errors");
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+
 		} else if (!SR.exists(solID)) {
-			return new ResponseEntity<>("Solution with ID " + solID + " not found", HttpStatus.NOT_FOUND);
+			response = new ResponseDTO(HttpStatus.NOT_FOUND.value(), false, "No solution found with id " + solID);
+			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+
 		} else {
 			sol.setId(solID);
 			SR.save(sol);
-			return new ResponseEntity<>("Solucao edited", HttpStatus.OK);
+			response = new ResponseDTO(HttpStatus.OK.value(), true, sol.getId());
+			return new ResponseEntity<>(response, HttpStatus.OK);
 		}
 
 	}
@@ -106,10 +123,12 @@ public class SolucaoController {
 	@RequestMapping(path = "Solucao/{solID}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> SolucaoDelete(@PathVariable long solID) {
 		if (!SR.exists(solID)) {
-			return new ResponseEntity<>("Solucao with ID " + solID + " not found", HttpStatus.NOT_FOUND);
+			response = new ResponseDTO(HttpStatus.NOT_FOUND.value(), false, "No solution found with id " + solID);
+			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 		}
 		SR.delete(solID);
-		return ResponseEntity.ok("Solution " + solID + " deleted");
+		response = new ResponseDTO(HttpStatus.OK.value(), true, solID);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 }

@@ -14,5 +14,5 @@ public interface TesteRepository extends CrudRepository<Teste, Long>{
 	List<Teste> findByNome(String nome);
 	List<Teste> findByProblemID(long id);
 	Teste findById(long id);
-	//Teste findTestOfProblemById(long probID, long testID);
+	void deleteByProblemID(long problemID);
 }

@@ -30,18 +30,17 @@ public class Solucao {
 	@Column(nullable = false)
 	private long problemID;
 
-
 	public Solucao(int id, boolean last, String body, List<String> outputs, long problemID) {
-		
+
 		this.id = id;
 		this.last = last;
 		this.body = body;
 		this.outputs = outputs;
 		this.problemID = problemID;
 	}
-	
-public Solucao(boolean last, String body, List<String> outputs, long problemID) {
-		
+
+	public Solucao(boolean last, String body, List<String> outputs, long problemID) {
+
 		this.last = last;
 		this.body = body;
 		this.outputs = outputs;
@@ -104,10 +103,19 @@ public Solucao(boolean last, String body, List<String> outputs, long problemID) 
 	}
 
 	/**
-	 *@param Sets id value to id
+	 * @param Sets
+	 *            id value to id
 	 */
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public long getProblemID() {
+		return problemID;
+	}
+
+	public void setProblemID(long problemID) {
+		this.problemID = problemID;
 	}
 
 }

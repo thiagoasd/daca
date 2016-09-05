@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import models.Estatisticas;
 
 @RestController
 public class EstatisticasController {
@@ -25,11 +26,7 @@ public class EstatisticasController {
 		long testeNum = TR.count();
 		long solucaoNum = SR.count();
 		
-		String resp = "Numero de Problemas: " + problemaNum;
-		resp += "\nNumero de Testes: " + testeNum;
-		resp += "\nNumero de Solucoes: " + solucaoNum;
-				
-		
-		return ResponseEntity.ok(resp);
+		Estatisticas stats = new Estatisticas(problemaNum, solucaoNum, testeNum);	
+		return ResponseEntity.ok(stats);
 	}
 }
