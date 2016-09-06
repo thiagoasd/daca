@@ -13,7 +13,12 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import bootwildfly.ProblemaRepository;
+import io.restassured.RestAssured;
+import io.restassured.authentication.FormAuthConfig;
 import io.restassured.http.ContentType;
+import io.restassured.path.xml.XmlPath;
+import io.restassured.response.Response;
+import io.restassured.response.ResponseBody;
 import models.Problema;
 import models.Teste;
 
@@ -29,7 +34,7 @@ public class ProblemControllerTest {
 		Random ran = new Random();
 		int ID = ran.nextInt(11) + 1;
 
-		get("/Problema").then().assertThat().statusCode(200).extract();
+		get("/Problema").then().assertThat().statusCode(200);
 		get("/Problema").then().body("nome", hasItem("nome " + ID));
 		get("/Problema").then().body("codigo", hasItem("codigo " + ID));
 		get("/Problema").then().body("dica", hasItem("dica " + ID));
@@ -199,8 +204,16 @@ public class ProblemControllerTest {
 
 	}
 
+	@Test
+	public void Teste() {
+
+
+	}
+
 	@Before
 	public void init() {
+		
+		RestAssured.authentication = form("daca", "daca", new FormAuthConfig("/login","username", "password"));
 
 		if (PR.count() == 0) {
 

@@ -15,6 +15,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import bootwildfly.ProblemaRepository;
 import bootwildfly.SolucaoRepository;
+import io.restassured.RestAssured;
+import io.restassured.authentication.FormAuthConfig;
 import io.restassured.http.ContentType;
 import models.Problema;
 import models.Solucao;
@@ -103,6 +105,8 @@ public class SolucaoControllerTest {
 
 	@Before
 	public void init() {
+		
+		RestAssured.authentication = form("daca", "daca", new FormAuthConfig("/login","username", "password"));
 		if (PR.count() == 0) {
 
 			for (int i = 1; i < 12; i++) {
