@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +26,7 @@ public class ProblemaConstroller {
 
 	@Autowired
 	TesteRepository TR;
-	
+
 	@Autowired
 	SolucaoRepository SR;
 
@@ -47,7 +48,7 @@ public class ProblemaConstroller {
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
 
-		PR.save(prob);
+		ProblemaSecureSave(prob);
 		response = new ResponseDTO(HttpStatus.OK.value(), true, prob.getId());
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
@@ -79,12 +80,13 @@ public class ProblemaConstroller {
 
 		} else {
 			prob.setId(probID);
-			PR.save(prob);
+			ProblemaSecureSave(prob);
 			response = new ResponseDTO(HttpStatus.OK.value(), true, prob.getId());
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		}
 	}
 
+	@Transactional
 	@RequestMapping(path = "Problema/{probID}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> ProblemaDelete(@PathVariable long probID) {
 
@@ -94,10 +96,10 @@ public class ProblemaConstroller {
 			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 		}
 
-		PR.delete(probID);
+		ProblemaSecureDelete(probID);
 		TR.deleteByProblemID(probID);
 		SR.deleteByProblemID(probID);
-		
+
 		response = new ResponseDTO(HttpStatus.OK.value(), true, probID);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
@@ -121,6 +123,7 @@ public class ProblemaConstroller {
 		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 	}
 
+	@Transactional
 	@RequestMapping(path = "Problema/{probID}/Teste", method = RequestMethod.POST)
 	public ResponseEntity<?> Teste(@PathVariable long probID, @Valid @RequestBody Teste teste,
 			BindingResult bindingResult) {
@@ -135,10 +138,10 @@ public class ProblemaConstroller {
 			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 
 		} else {
-			TR.save(teste);
+			TesteSecureSave(teste);
 			Problema prob = PR.findById(probID);
 			prob.addTest(teste);
-			PR.save(prob);
+			ProblemaSecureSave(prob);
 
 			response = new ResponseDTO(HttpStatus.OK.value(), true, teste.getId());
 			return new ResponseEntity<>(response, HttpStatus.OK);
@@ -183,17 +186,16 @@ public class ProblemaConstroller {
 
 		} else {
 			teste.setId(testeID);
-			TR.save(teste);
+			TesteSecureSave(teste);
 			response = new ResponseDTO(HttpStatus.OK.value(), true, testeID);
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		}
 
 	}
 
-	
 	@RequestMapping(path = "Problema/{probID}/Teste/{testeID}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> TesteDelete(@PathVariable long probID, @PathVariable long testeID) {
- 		if (!PR.exists(probID)) {
+		if (!PR.exists(probID)) {
 			response = new ResponseDTO(HttpStatus.NOT_FOUND.value(), false,
 					"Problema with ID " + probID + " not found");
 			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
@@ -201,14 +203,34 @@ public class ProblemaConstroller {
 			response = new ResponseDTO(HttpStatus.NOT_FOUND.value(), false, "Teste with ID " + testeID + " not found");
 			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 		}
-		
- 		Problema prob = PR.findById(probID);
- 		Teste test = TR.findById(testeID);
- 		prob.removeTest(test);
- 		PR.save(prob);
-		TR.delete(testeID);
+
+		Problema prob = PR.findById(probID);
+		Teste test = TR.findById(testeID);
+		prob.removeTest(test);
+		ProblemaSecureSave(prob);
+		TesteSecureDelete(testeID);
 		response = new ResponseDTO(HttpStatus.OK.value(), true, testeID);
 		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	@Transactional
+	private void ProblemaSecureSave(Problema prob) {
+		PR.save(prob);
+	}
+
+	@Transactional
+	private void TesteSecureSave(Teste test) {
+		TR.save(test);
+	}
+
+	@Transactional
+	private void ProblemaSecureDelete(long id) {
+		PR.delete(id);
+	}
+
+	@Transactional
+	private void TesteSecureDelete(long id) {
+		TR.delete(id);
 	}
 
 }

@@ -16,9 +16,6 @@ import bootwildfly.ProblemaRepository;
 import io.restassured.RestAssured;
 import io.restassured.authentication.FormAuthConfig;
 import io.restassured.http.ContentType;
-import io.restassured.path.xml.XmlPath;
-import io.restassured.response.Response;
-import io.restassured.response.ResponseBody;
 import models.Problema;
 import models.Teste;
 
@@ -201,12 +198,6 @@ public class ProblemControllerTest {
 
 		delete("/Problema/{ProblemID}/Teste/{id}", ProblemID, ID).then().assertThat().statusCode(200);
 		get("/Problema/{ProblemID}/Teste/{id}", ProblemID, ID).then().assertThat().statusCode(404);
-
-	}
-
-	@Test
-	public void Teste() {
-
 
 	}
 

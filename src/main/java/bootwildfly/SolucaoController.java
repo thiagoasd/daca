@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -78,10 +79,10 @@ public class SolucaoController {
 		List<Solucao> temp_sols = SR.findByProblemIDAndLast(sol.getId(), true);
 		for (Solucao solucao : temp_sols) {
 			solucao.setLast(false);
-			SR.save(solucao);
+			SolucaoSecureSave(solucao);
 		}
 
-		SR.save(sol);
+		SolucaoSecureSave(sol);
 		response = new ResponseDTO(HttpStatus.OK.value(), true, sol.getId());
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
@@ -113,7 +114,7 @@ public class SolucaoController {
 
 		} else {
 			sol.setId(solID);
-			SR.save(sol);
+			SolucaoSecureSave(sol);
 			response = new ResponseDTO(HttpStatus.OK.value(), true, sol.getId());
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		}
@@ -126,9 +127,19 @@ public class SolucaoController {
 			response = new ResponseDTO(HttpStatus.NOT_FOUND.value(), false, "No solution found with id " + solID);
 			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 		}
-		SR.delete(solID);
+		SolucaoSecureDelete(solID);
 		response = new ResponseDTO(HttpStatus.OK.value(), true, solID);
 		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	@Transactional
+	private void SolucaoSecureSave(Solucao sol) {
+		SR.save(sol);
+	}
+
+	@Transactional
+	private void SolucaoSecureDelete(long id) {
+		SR.delete(id);
 	}
 
 }
