@@ -148,5 +148,14 @@ public class Problema {
 	public void setTestes(List<Teste> testes) {
 		this.testes = testes;
 	}
+	
+	public void addTest(Teste test){
+		this.testes.add(test);
+	}
+	
+	public void removeTest(Teste test){
+		this.testes.remove(test);
+	}
+
 
 }

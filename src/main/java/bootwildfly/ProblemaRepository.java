@@ -16,4 +16,6 @@ public interface ProblemaRepository extends CrudRepository<Problema, Long> {
 	Problema findById(long id);
 
 	List<Problema> findByNome(String nome);
+	
+	long count();
 }

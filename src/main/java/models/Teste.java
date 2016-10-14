@@ -10,6 +10,14 @@ import org.hibernate.validator.constraints.NotBlank;
 @Entity
 public class Teste {
 
+	@Id
+	@GeneratedValue
+	private long id;
+	
+	@Column(nullable = false)
+	@NotBlank
+	private String nome;
+	
 	@Column(nullable = false)
 	@NotBlank
 	private String dica;
@@ -20,18 +28,10 @@ public class Teste {
 	
 	@Column(nullable = false)
 	@NotBlank
-	private String nome;
-	
-	@Column(nullable = false)
-	@NotBlank
 	private String saida;
 	
-	@Id
-	@GeneratedValue
-	private int id;
-	
 	@Column(nullable = false)
-	private int problemID;
+	private long problemID;
 	
 	@Column(nullable = false)
 	private boolean publico;
@@ -40,13 +40,12 @@ public class Teste {
 
 	}
 
-	public Teste(String dica, String entrada, String nome, String saida, int id, int problemID, boolean publico) {
+	public Teste(String nome, String dica, String entrada, String saida, long problemID, boolean publico) {
 
 		this.dica = dica;
 		this.entrada = entrada;
 		this.nome = nome;
 		this.saida = saida;
-		this.id = id;
 		this.problemID = problemID;
 		this.publico = publico;
 	}
@@ -68,7 +67,7 @@ public class Teste {
 	/**
 	 * @return the id
 	 */
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
@@ -82,7 +81,7 @@ public class Teste {
 	/**
 	 * @return the problemID
 	 */
-	public int getProblemID() {
+	public long getProblemID() {
 		return problemID;
 	}
 
@@ -124,7 +123,7 @@ public class Teste {
 	 * @param Sets
 	 *            id value to id
 	 */
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -140,7 +139,7 @@ public class Teste {
 	 * @param Sets
 	 *            problemID value to problemID
 	 */
-	public void setProblemID(int problemID) {
+	public void setProblemID(long problemID) {
 		this.problemID = problemID;
 	}
 
